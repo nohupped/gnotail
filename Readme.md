@@ -39,7 +39,7 @@ Usage of /tmp/go-build911163385/command-line-arguments/_obj/exe/main:
 
 The above conf file will make gnotail tail the logs `/var/log/syslog` and `/var/log/auth.log` in 2 separate goroutines and does a regex pattern matching for each of the patterns and writes to a `UDP` port as json data.
 
-######An example message read with `netcat -ul 9999`:
+###### An example message read with `netcat -ul 9999`:
 ```
 {"filename":"/var/log/auth.log","rule":"sudo","message":"May  9 01:28:33 localghost sudo:  someuser : TTY=pts/2 ; PWD=/home/someuser ; USER=root ; COMMAND=/usr/bin/whoami"}{"filename":"/var/log/auth.log","rule":"sudo","message":"May  9 01:28:33 localghost sudo: pam_unix(sudo:session): session opened for user root by (uid=0)"}{"filename":"/var/log/auth.log","rule":"pam_unix","message":"May  9 01:28:33 localghost sudo: pam_unix(sudo:session): session opened for user root by (uid=0)"}{"filename":"/var/log/auth.log","rule":"sudo","message":"May  9 01:28:33 localghost sudo: pam_unix(sudo:session): session closed for user root"}{"filename":"/var/log/auth.log","rule":"pam_unix","message":"May  9 01:28:33 localghost sudo: pam_unix(sudo:session): session closed for user root"}
 
