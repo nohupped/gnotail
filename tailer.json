@@ -1,0 +1,10 @@
+{
+   "/var/log/syslog": [
+       "cron",
+       "su.*"
+   ],
+   "/var/log/auth.log": [
+       "sudo",
+       "pam_unix"
+   ]
+}
