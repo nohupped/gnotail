@@ -3,15 +3,15 @@
   A light-weight inotify based tailer and pattern matcher for tailing and pattern matching multiple files in parallel.
   Handles logrotation and file truncation. 
   
-#####Requirement:
+##### Requirement:
 
 Linux kernel 2.6.13 or higher
 
-#####How to install:
+##### How to install:
 
 `go get -u github.com/nohupped/gnotail`
 
-#####How to run:
+##### How to run:
 
 ```
 Usage of /tmp/go-build911163385/command-line-arguments/_obj/exe/main:
