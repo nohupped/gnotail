@@ -1,16 +1,16 @@
 package main
 
 import (
-	"gotail/generic"
-	"gotail/logger"
+	"gnotail/generic"
+	"gnotail/logger"
 	"gotail/poller"
-	"gotail/tailer"
+	"gnotail/tailer"
 	log "github.com/nohupped/glog"
 	"os"
 	"sync"
 	"fmt"
 	"github.com/rjeczalik/notify"
-	"gotail/udp"
+	"gnotail/udp"
 )
 
 var mapping generic.Mapping
@@ -68,14 +68,13 @@ func main() {
 			}
 
 			mapping.MetaMapping[filename] = tmp
-			fmt.Println("Going to retail", filename)
+			log.Infoln("Going to retail", filename)
 			wg.Add(1)
 			go poller.ReadInotify(mapping.MetaMapping[filename].Notifychan, mapping.MetaMapping[filename].TriggerChan, wg,
 				mapping.MetaMapping[filename], UDPClient)
 		}
 	}
 
-	fmt.Println("somethng")
 	wg.Wait()
 }
 

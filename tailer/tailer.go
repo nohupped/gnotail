@@ -6,7 +6,7 @@ import (
 	"os"
 	"io"
 	"encoding/json"
-	"gotail/generic"
+	"gnotail/generic"
 	"net"
 )
 

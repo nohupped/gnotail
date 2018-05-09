@@ -5,9 +5,9 @@ import (
 	log "github.com/nohupped/glog"
 	"sync"
 	"runtime"
-	"gotail/generic"
+	"gnotail/generic"
 	"time"
-	"gotail/tailer"
+	"gnotail/tailer"
 	"net"
 )
 
@@ -21,8 +21,6 @@ func SetNewNotifier(filepath string, c chan notify.EventInfo, meta generic.FileM
 	tailer.Tail(meta, udpclient)
 	return nil
 }
-
-
 
 func ReadInotify(r <-chan notify.EventInfo, trigger <-chan string, wg *sync.WaitGroup, meta generic.FileMeta, udpclient *net.UDPConn) {
 	defer wg.Done()
