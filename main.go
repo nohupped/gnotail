@@ -3,12 +3,11 @@ package main
 import (
 	"gnotail/generic"
 	"gnotail/logger"
-	"gotail/poller"
+	"gnotail/poller"
 	"gnotail/tailer"
 	log "github.com/nohupped/glog"
 	"os"
 	"sync"
-	"fmt"
 	"github.com/rjeczalik/notify"
 	"gnotail/udp"
 )
