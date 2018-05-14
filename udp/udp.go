@@ -6,7 +6,7 @@ import (
 	log "github.com/nohupped/glog"
 )
 
-//var ConnUDP *net.UDPConn
+// NewUDPClient returns a *net.UDPConn struct.
 func NewUDPClient(ip string, port int) *net.UDPConn{
 
 	ServerAddr,err := net.ResolveUDPAddr("udp",fmt.Sprintf("%s:%d",ip, port))

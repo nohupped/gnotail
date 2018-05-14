@@ -45,7 +45,7 @@ func main() {
 		case filename := <- rotateNotificationChan:
 			log.Debugln("Trigger received for", filename)
 			mapping.MetaMapping[filename].TriggerChan <- filename
-			log.Debugln("Closed FD for", filename)
+			log.Debugln("Closing FD for", filename)
 			mapping.MetaMapping[filename].FD.Close()
 			notify.Stop(mapping.MetaMapping[filename].Notifychan)
 			for ; ;  {

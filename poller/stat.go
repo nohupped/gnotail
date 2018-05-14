@@ -7,6 +7,9 @@ import (
 	"time"
 )
 
+// FileStat is supposed to run in a goroutine and continuously check the os.Stat of the filename every 1 second.
+// If the size of the file is reduced (truncated, or moved and a new file is created), this will write the name of the file
+// to the w channel (supposed to be the trigger channel.) This will do a stat everytime, and doesn't hold an open fd.
 func FileStat(filename string, w chan string, wg *sync.WaitGroup) {
 	var offset int64
 	offset = -1

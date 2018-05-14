@@ -8,6 +8,8 @@ import (
 	log "github.com/nohupped/glog"
 )
 
+// ConfParser accepts an io.Reader(an *os.File) and a map and populates the map.
+// Used to parse the json config that this program reads.
 func ConfParser(c io.Reader, data *map[string][]string) {
 	//conf := map[string][]string{}
 	d, err := ioutil.ReadAll(c)

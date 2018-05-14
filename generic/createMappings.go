@@ -6,8 +6,12 @@ import (
 	"regexp"
 	"os"
 )
+
+// FileToPattern is used to map the file to its corresponding slice of patterns.
 var FileToPattern map[string][]string
 
+// Mapping holds generic configuration (port, loglevel, addr to which the udp datagram is sent and 
+// slice of FileMeta struct).
 type Mapping struct {
 	Port, Loglevel *int
 	UDPConnAddr *string
@@ -15,7 +19,10 @@ type Mapping struct {
 }
 
 
+// FileMeta holds the meta data and a trigger channel to interrupt the 
+// goroutine for each file when it is tailed. It is nested inside Mapping{} struct.
 type FileMeta struct {
+	Hostname string
 	Filename string
 	Notifychan chan notify.EventInfo
 	Offset int64
@@ -24,6 +31,8 @@ type FileMeta struct {
 	FD *os.File
 }// Maps filename to inotify.EventInfo chan for setting watchers for each files
 
+// CreateMappings is used to parse the configuration file and create 
+// the mappings required by the program to tail and filter each file.
 func CreateMappings() Mapping{
 	mapping := new(Mapping)
 
@@ -43,9 +52,17 @@ func CreateMappings() Mapping{
 	mapping.Loglevel = flag.Int("loglevel", 2, "Log level when printing to STDOUT. ErrorLevel: 0, " +
 		"WarnLevel: 1, InfoLevel: 2, DebugLevel: 3. Defaults to InfoLevel.")
 	mapping.UDPConnAddr = flag.String("udp_conn_addr", "127.0.0.1", "address to start udp server")
+	hostname := flag.String("hostname", "", "Hostname to be tagged in the filtered output. Defaults to system hostname.")
 	flag.Parse()
 	if *conf == "" || conf == nil {
 		panic("Give a configuration.")
+	}
+	if *hostname == "" {
+		var err error
+		*hostname, err = os.Hostname()
+		if err != nil {
+			panic(err)
+		}
 	}
 
 	if *mapping.Loglevel > 3 {
@@ -65,11 +82,12 @@ func CreateMappings() Mapping{
 			panic(err)
 		}
 
+		// Updates each file's meta information
 		mapping.MetaMapping[k] = FileMeta{
+			Hostname: *hostname,
 			Patterns:   transformPatterns(v),
 			Notifychan: make(chan notify.EventInfo, 2048),
 			Offset:     stat.Size(), // This is not updated as tail follows.
-			//Offset: 0,
 			TriggerChan: make(chan string),
 			Filename: k,
 		}
@@ -78,6 +96,7 @@ func CreateMappings() Mapping{
 	return *mapping
 }
 
+// Converts the patterns mentioned in the config file to slice of regex objects.
 func transformPatterns(p []string) []*regexp.Regexp{
 	var patterns []*regexp.Regexp
 	for _, i := range p {
